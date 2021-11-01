@@ -9,7 +9,26 @@ use Tests\TestCase;
 
 class ProductsTest extends TestCase
 {
-//    use RefreshDatabase;
+    use RefreshDatabase;
+
+    private $user;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user =  User::factory()->make([
+            'email' => 'ce.pichardo@gmail.com',
+            'password' => bcrypt('password123')
+        ]);
+    }
+
+//    private function create_user()
+//    {
+//        return  User::factory()->make([
+//            'email' => 'ce.pichardo@gmail.com',
+//            'password' => bcrypt('password123')
+//        ]);
+//    }
 
     /**
      * A basic test example.
@@ -26,16 +45,13 @@ class ProductsTest extends TestCase
 
     public function test_homepage_contains_non_empty_products_table()
     {
-        $user =  User::factory()->make([
-            'email' => 'ce.pichardo@gmail.com',
-            'password' => bcrypt('password123')
-        ]);
+//        $user = $this->create_user();
 
         $product = Product::create([
             'name' => 'Product 1',
             'price' => 99.99
         ]);
-        $response = $this->actingAs($user)->get('/');
+        $response = $this->actingAs($this->user)->get('/');
         $response->assertStatus(200);
 
         $response->assertDontSee('No Products Found');
@@ -54,14 +70,11 @@ class ProductsTest extends TestCase
 //            ]);
 //        }
 
-        $user =  User::factory()->make([
-            'email' => 'ce.pichardo@gmail.com',
-            'password' => bcrypt('password123')
-        ]);
+//        $user = $this->create_user();
 
         $products = Product::factory()->count(3)->make();
 
-        $response = $this->actingAs($user)->get('/');
+        $response = $this->actingAs($this->user)->get('/');
 
         $response->assertDontSee($products->last()->name);
     }
