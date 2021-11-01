@@ -13,6 +13,10 @@
                             {{session('status')}}
                         </div>
                     @endif
+                    @if(auth()->user()->is_admin)
+                            <a href="{{route('products.create')}}" class="btn btn-primary mb-3">Add new product</a>
+
+                    @endif
                     <table class="table">
                         <tr>
                             <th>Product Name</th>
