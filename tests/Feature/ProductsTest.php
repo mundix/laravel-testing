@@ -31,13 +31,11 @@ class ProductsTest extends TestCase
             'password' => bcrypt('password123')
         ]);
 
-        $response = $this->actingAs($user)->get('/');
         $product = Product::create([
             'name' => 'Product 1',
             'price' => 99.99
         ]);
-        $response = $this->get('/');
-
+        $response = $this->actingAs($user)->get('/');
         $response->assertStatus(200);
 
         $response->assertDontSee('No Products Found');
@@ -61,10 +59,10 @@ class ProductsTest extends TestCase
             'password' => bcrypt('password123')
         ]);
 
-        $response = $this->actingAs($user)->get('/');
         $products = Product::factory()->count(3)->make();
 
-        $response = $this->get('/');
+        $response = $this->actingAs($user)->get('/');
+
         $response->assertDontSee($products->last()->name);
     }
 }

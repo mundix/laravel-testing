@@ -46,7 +46,9 @@ class AuthTest extends TestCase
     public function test_authenticated_user_cannot_access_products_table()
     {
         // Go to homepage /
-        // assert statue 200
+        $response = $this->get('/');
+        $response->assertStatus(302);
+        // assert statue 302
     }
 
 
