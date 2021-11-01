@@ -48,6 +48,7 @@ class AuthTest extends TestCase
         // Go to homepage /
         $response = $this->get('/');
         $response->assertStatus(302);
+        $response->assertRedirect('/login');
         // assert statue 302
     }
 
