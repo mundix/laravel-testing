@@ -8,19 +8,20 @@ use Tests\TestCase;
 
 class ProductsTest extends TestCase
 {
-    use RefreshDatabase;
+//    use RefreshDatabase;
+
     /**
      * A basic test example.
      *
      * @return void
      */
-    public function test_homepage_contains_empty_products_table()
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-        $response->assertSee('No Products Found');
-    }
+//    public function test_homepage_contains_empty_products_table()
+//    {
+//        $response = $this->get('/');
+//
+//        $response->assertStatus(200);
+//        $response->assertSee('No Products Found');
+//    }
 
     public function test_homepage_contains_non_empty_products_table()
     {
@@ -37,5 +38,19 @@ class ProductsTest extends TestCase
 
         $view_products = $response->viewData('products');
         $this->assertEquals($product->name, $view_products->first()->name);
+    }
+
+    public function test_pagination_products_table_doesnt_show_11th_record()
+    {
+//        for ($i = 1; $i <= 11; $i++) {
+//            $product = Product::create([
+//                'name' => 'Product' . $i,
+//                'price' => rand(10, 99)
+//            ]);
+//        }
+        $products = Product::factory()->count(3)->make();
+
+        $response = $this->get('/');
+        $response->assertDontSee($products->last()->name);
     }
 }
