@@ -28,6 +28,7 @@
                                 <td>{{$product->name}}</td>
                                 <td>{{$product->price}}</td>
                                 <td>{{$product->price_eur}}</td>
+                                <td><a href="{{route('products.edit', $product)}}" class="btn btn-primary">Edit</a></td>
                             </tr>
                         @empty
                             <tr>
