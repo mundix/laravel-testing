@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -25,6 +26,12 @@ class ProductsTest extends TestCase
 
     public function test_homepage_contains_non_empty_products_table()
     {
+        $user =  User::factory()->make([
+            'email' => 'ce.pichardo@gmail.com',
+            'password' => bcrypt('password123')
+        ]);
+
+        $response = $this->actingAs($user)->get('/');
         $product = Product::create([
             'name' => 'Product 1',
             'price' => 99.99
@@ -48,6 +55,13 @@ class ProductsTest extends TestCase
 //                'price' => rand(10, 99)
 //            ]);
 //        }
+
+        $user =  User::factory()->make([
+            'email' => 'ce.pichardo@gmail.com',
+            'password' => bcrypt('password123')
+        ]);
+
+        $response = $this->actingAs($user)->get('/');
         $products = Product::factory()->count(3)->make();
 
         $response = $this->get('/');
