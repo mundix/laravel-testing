@@ -16,7 +16,8 @@ class AuthTest extends TestCase
         // Create a user
         User::factory()->make([
             'email' => 'ce.pichardo@gmail.com',
-            'password' => bcrypt('password123')
+            'password' => bcrypt('password123'),
+            'is_admin' => 0
         ]);
 
         $response = $this->post('/login', ['email' => 'test@test.com', 'password' => 'test1234']);
@@ -33,23 +34,24 @@ class AuthTest extends TestCase
         // Create a user
         $user =  User::factory()->make([
             'email' => 'ce.pichardo@gmail.com',
-            'password' => bcrypt('password123')
+            'password' => bcrypt('password123'),
+            'is_admin' => 0
         ]);
 
-        $response = $this->actingAs($user)->get('/');
-        $response->assertStatus(200);
-        // Post to /login
-        // Go to homepage /
+        // User logged on product page
+        $response = $this->actingAs($user)->get('/products');
         // assert statue 200
+        $response->assertStatus(200);
     }
 
     public function test_authenticated_user_cannot_access_products_table()
     {
-        // Go to homepage /
-        $response = $this->get('/');
-        $response->assertStatus(302);
-        $response->assertRedirect('/login');
+        // Go to products pages
+        $response = $this->get('/products');
         // assert statue 302
+        $response->assertStatus(302);
+        // Redirect to login
+        $response->assertRedirect('/login');
     }
 
 
