@@ -15,7 +15,7 @@ class ProductsTest extends TestCase
 
     private function create_user($is_admin = 0)
     {
-        $this->user =  User::factory()->make([
+        $this->user = User::factory()->make([
             'email' => $is_admin ? 'admin@admin.com' : 'user@user.com',
             'password' => bcrypt('password123'),
             'is_admin' => $is_admin
@@ -24,7 +24,7 @@ class ProductsTest extends TestCase
 
     /**
      * This test must be logged to access
-    */
+     */
     public function test_homepage_contains_empty_products_table()
     {
         $this->create_user();
@@ -101,5 +101,13 @@ class ProductsTest extends TestCase
         $product = Product::orderBy('id', 'desc')->first();
         $this->assertEquals('New Product', $product->name);
         $this->assertEquals(99.99, $product->price);
+    }
+
+    public function test_edit_product_form_contains_correct_name_and_price()
+    {
+        $this->create_user(1);
+        $product = Product::create(['name' => 'New Product Test', 'price' => 99.99]);
+        $response = $this->actingAs($this->user)->get("/products/{$product->id}/edit");
+        $response->assertStatus(200);
     }
 }
