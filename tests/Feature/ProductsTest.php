@@ -109,5 +109,7 @@ class ProductsTest extends TestCase
         $product = Product::create(['name' => 'New Product Test', 'price' => 99.99]);
         $response = $this->actingAs($this->user)->get("/products/{$product->id}/edit");
         $response->assertStatus(200);
+//        $response->assertSee('value="' . $product->name . '"');
+        $response->assertSee('value="' . $product->price . '"', false);
     }
 }
