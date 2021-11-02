@@ -38,6 +38,11 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         Product::create($request->all());
+        if ($request->hasFile('photo')) {
+            $filename = $request->photo->getClientOriginalName();
+            $request->photo->storeAs('logos', $filename);
+            $product->update(['photo' => $filename]);
+        }
         return redirect()->route('products.index');
     }
 
