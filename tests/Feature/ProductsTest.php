@@ -9,6 +9,13 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 
+// We can filter by single file
+//php artisan test --filter product
+//php artisan test --group approved
+//php artisan test --exclude-group approved
+//How to prevent multiple errors
+//php artisan test --group approved --stop-on-failure
+
 class ProductsTest extends TestCase
 {
     use RefreshDatabase;
@@ -137,6 +144,9 @@ class ProductsTest extends TestCase
         $response->assertStatus(422); //this statusis for api
     }
 
+    /**
+     * @group approved
+     */
     public  function test_delete_product_no_longer_exists_in_database()
     {
         $this->create_user(1);
@@ -146,7 +156,9 @@ class ProductsTest extends TestCase
         $response->assertStatus(302);
         $this->assertEquals(0, Product::count());
     }
-
+    /**
+     * @group approved
+    */
     public function test_create_product_file_uploaded()
     {
         $this->create_user(1);
