@@ -26,7 +26,13 @@
                             </div>
                             <div class="form-group">
                                 <label for="product_price">Price</label>
-                                <input type="text" class="form-control @error('price') is-invalid @enderror" id="product_price" aria-describedby="priceHelp" name="price" value="{{old('price', $product->price)}}">
+                                <input type="text"
+                                       class="form-control @error('price') is-invalid @enderror"
+                                       id="product_price"
+                                       aria-describedby="priceHelp"
+                                       name="price"
+                                       value="{{old('price', $product->price)}}"
+                                >
                                 @error('price')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

@@ -112,4 +112,16 @@ class ProductsTest extends TestCase
 //        $response->assertSee('value="' . $product->name . '"');
         $response->assertSee('value="' . $product->price . '"', false);
     }
+
+    public function test_update_product_correct_validation_error()
+    {
+        $this->create_user(1);
+        $product = Product::create(['name' => 'New Product Test', 'price' => 99.99]);
+
+        $response = $this->actingAs($this->user)->put("/products/{$product->id}",
+            ['name' => 'Test', 'price' => 99.99]);
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors(['name']);
+    }
+
 }
