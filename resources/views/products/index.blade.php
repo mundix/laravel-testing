@@ -29,6 +29,18 @@
                                 <td>{{$product->price}}</td>
                                 <td>{{$product->price_eur}}</td>
                                 <td><a href="{{route('products.edit', $product)}}" class="btn btn-primary">Edit</a></td>
+                                <td>
+                                    <form action="{{route('products.destroy', $product)}}"
+                                          method="POST" onsubmit="return confirm('Are you sure?')"
+                                          style="display:inline-block"
+                                    >
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="btn btn-danger">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         @empty
                             <tr>

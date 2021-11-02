@@ -124,4 +124,25 @@ class ProductsTest extends TestCase
         $response->assertSessionHasErrors(['name']);
     }
 
+    public function test_update_product_json_correct_validation_error()
+    {
+        $this->create_user(1);
+        $product = Product::create(['name' => 'New Product Test', 'price' => 99.99]);
+
+        $response = $this->actingAs($this->user)->put("/products/{$product->id}",
+            ['name' => 'Test', 'price' => 99.99],
+            ['Accept' => 'Application/json']);
+        $response->assertStatus(422); //this statusis for api
+    }
+
+    public  function test_delete_product_no_longer_exists_in_database()
+    {
+        $this->create_user(1);
+        $product = Product::create(['name' => 'New Product Test', 'price' => 99.99]);
+        $this->assertEquals(1, Product::count());
+        $response = $this->actingAs($this->user)->delete("/products/{$product->id}");
+        $response->assertStatus(302);
+        $this->assertEquals(0, Product::count());
+    }
+
 }
